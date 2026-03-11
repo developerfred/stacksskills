@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StacksSkills — AI agents are wrong about Stacks</title>
+    <meta name="description" content="The missing knowledge between AI agents and Stacks/Bitcoin. Corrections for Clarity, sBTC, wallets, and costs.">
+    <meta name="theme-color" content="#F7931A">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    
+    <style>
+        :root {
+            /* Stacks/Bitcoin inspired palette */
+            --orange: #F7931A;
+            --orange-dark: #E67E00;
+            --black: #0D0D0D;
+            --black-soft: #1A1A1A;
+            --white: #FAFAFA;
+            --gray: #6B6B6B;
+            --gray-light: #E5E5E5;
+            
+            /* Typography */
+            --font-display: 'Syne', sans-serif;
+            --font-mono: 'Space Mono', monospace;
+            
+            /* Spacing */
+            --space-xs: 0.5rem;
+            --space-sm: 1rem;
+            --space-md: 1.5rem;
+            --space-lg: 2.5rem;
+            --space-xl: 4rem;
+            --space-2xl: 6rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-mono);
+            background: var(--white);
+            color: var(--black);
+            line-height: 1.5;
+            font-size: 15px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Noise texture overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-md);
+        }
+
+        /* HEADER */
+        header {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: var(--space-xl) 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 80%;
+            height: 150%;
+            background: var(--orange);
+            transform: rotate(-12deg);
+            z-index: -1;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--black);
+        }
+
+        .hero-label {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--gray);
+            margin-bottom: var(--space-md);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .hero-label::before {
+            content: '';
+            width: 40px;
+            height: 1px;
+            background: var(--gray);
+        }
+
+        h1 {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 12vw, 8rem);
+            font-weight: 800;
+            line-height: 0.9;
+            letter-spacing: -0.03em;
+            color: var(--white);
+            mix-blend-mode: difference;
+            margin-bottom: var(--space-md);
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            color: var(--white);
+            max-width: 480px;
+            mix-blend-mode: difference;
+            margin-bottom: var(--space-lg);
+        }
+
+        .hero-subtitle strong {
+            background: var(--black);
+            color: var(--white);
+            padding: 0.1em 0.3em;
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-family: var(--font-mono);
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--black);
+            background: var(--white);
+            padding: var(--space-sm) var(--space-md);
+            border: 2px solid var(--black);
+            transition: all 0.2s ease;
+        }
+
+        .hero-cta:hover {
+            background: var(--black);
+            color: var(--white);
+        }
+
+        .hero-cta svg {
+            width: 18px;
+            height: 18px;
+            transition: transform 0.2s ease;
+        }
+
+        .hero-cta:hover svg {
+            transform: translateX(4px);
+        }
+
+        /* MARQUEE */
+        .marquee {
+            background: var(--black);
+            color: var(--white);
+            padding: var(--space-sm) 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .marquee-content {
+            display: flex;
+            animation: marquee 20s linear infinite;
+            width: max-content;
+        }
+
+        .marquee-item {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            white-space: nowrap;
+            padding: 0 var(--space-lg);
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* SECTIONS */
+        section {
+            padding: var(--space-2xl) 0;
+        }
+
+        .section-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.25em;
+            color: var(--gray);
+            margin-bottom: var(--space-md);
+            display: block;
+        }
+
+        h2 {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            color: var(--black);
+            margin-bottom: var(--space-lg);
+        }
+
+        /* MISCONCEPTIONS GRID */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-md);
+        }
+
+        .misconception-card {
+            background: var(--white);
+            border: 1px solid var(--black);
+            padding: var(--space-md);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .misconception-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--orange);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .misconception-card:hover {
+            background: var(--black);
+            color: var(--white);
+        }
+
+        .misconception-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .misconception-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: var(--space-sm);
+        }
+
+        .misconception-card .wrong {
+            font-size: 13px;
+            color: var(--gray);
+            margin-bottom: var(--space-xs);
+            text-decoration: line-through;
+        }
+
+        .misconception-card:hover .wrong {
+            color: var(--gray-light);
+        }
+
+        .misconception-card .correct {
+            font-size: 13px;
+            color: var(--orange);
+            font-weight: 700;
+        }
+
+        /* SKILLS GRID */
+        .skills-section {
+            background: var(--black);
+            color: var(--white);
+            padding: var(--space-2xl) 0;
+        }
+
+        .skills-section h2 {
+            color: var(--white);
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1px;
+            background: var(--gray);
+            border: 1px solid var(--gray);
+        }
+
+        .skill-item {
+            background: var(--black-soft);
+            padding: var(--space-md);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 200px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-item::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 0 30px 30px;
+            border-color: transparent transparent var(--orange) transparent;
+            transition: all 0.3s ease;
+        }
+
+        .skill-item:hover {
+            background: var(--orange);
+        }
+
+        .skill-item:hover::after {
+            border-color: transparent transparent var(--black) transparent;
+        }
+
+        .skill-item:hover .skill-arrow {
+            transform: translate(4px, -4px);
+        }
+
+        .skill-icon {
+            font-size: 2rem;
+            margin-bottom: var(--space-sm);
+        }
+
+        .skill-item h3 {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: var(--space-xs);
+        }
+
+        .skill-item p {
+            font-size: 13px;
+            color: var(--gray);
+            margin-bottom: var(--space-sm);
+        }
+
+        .skill-item:hover p {
+            color: var(--black-soft);
+        }
+
+        .skill-meta {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--orange);
+            margin-top: auto;
+        }
+
+        .skill-item:hover .skill-meta {
+            color: var(--black);
+        }
+
+        .skill-arrow {
+            position: absolute;
+            bottom: var(--space-md);
+            right: var(--space-md);
+            width: 20px;
+            height: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .skill-arrow svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* CODE BLOCK */
+        .code-section {
+            background: var(--white);
+        }
+
+        .code-block {
+            background: var(--black);
+            color: var(--white);
+            padding: var(--space-lg);
+            font-family: var(--font-mono);
+            font-size: 14px;
+            line-height: 1.8;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .code-block::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--orange), var(--orange-dark));
+        }
+
+        .code-block code {
+            color: #E1E4E8;
+        }
+
+        .code-block .comment {
+            color: #6A737D;
+        }
+
+        .code-block .keyword {
+            color: #F97583;
+        }
+
+        .code-block .string {
+            color: #9ECBFF;
+        }
+
+        /* RESOURCES */
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-md);
+        }
+
+        .resource-link {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-md);
+            border: 1px solid var(--gray-light);
+            transition: all 0.2s ease;
+        }
+
+        .resource-link:hover {
+            border-color: var(--black);
+            background: var(--black);
+            color: var(--white);
+        }
+
+        .resource-link svg {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        .resource-link span {
+            font-family: var(--font-display);
+            font-weight: 600;
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--orange);
+            color: var(--black);
+            padding: var(--space-xl) 0;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--space-md);
+        }
+
+        .footer-logo {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: var(--space-md);
+        }
+
+        .footer-links a {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            :root {
+                --space-xl: 2.5rem;
+                --space-2xl: 4rem;
+            }
+
+            header::before {
+                width: 100%;
+                top: 0;
+                height: 60%;
+                transform: none;
+            }
+
+            h1 {
+                color: var(--black);
+                mix-blend-mode: normal;
+            }
+
+            .hero-subtitle {
+                color: var(--black);
+                mix-blend-mode: normal;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        /* ANIMATIONS */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.6s ease forwards;
+            opacity: 0;
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <span class="hero-label animate-in">For AI Agents & Developers</span>
+            <h1 class="animate-in delay-1">Stacks<br>Skills</h1>
+            <p class="hero-subtitle animate-in delay-2">
+                LLMs think Clarity is like Solidity. They're wrong.<br>
+                <strong>sBTC is not wrapped Bitcoin</strong>. Stacks costs fractions of a cent, not dollars.
+            </p>
+            <a href="#skills" class="hero-cta animate-in delay-3">
+                Explore Skills
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </a>
+        </div>
+    </header>
+
+    <div class="marquee">
+        <div class="marquee-content">
+            <span class="marquee-item">Clarity is not Solidity</span>
+            <span class="marquee-item">•</span>
+            <span class="marquee-item">Hiro Wallet, not MetaMask</span>
+            <span class="marquee-item">•</span>
+            <span class="marquee-item">sBTC uses threshold signatures</span>
+            <span class="marquee-item">•</span>
+            <span class="marquee-item">SP addresses, not 0x</span>
+            <span class="marquee-item">•</span>
+            <span class="marquee-item">No reentrancy in Clarity</span>
+            <span class="marquee-item">•</span>
+            <span class="marquee-item">Stacks.js, not ethers.js</span>
+            <span class="marquee-item">•</span>
+            <span class="marquee-item">Clarity is not Solidity</span>
+            <span class="marquee-item">•</span>
+            <span class="marquee-item">Hiro Wallet, not MetaMask</span>
+            <span class="marquee-item">•</span>
+            <span class="marquee-item">sBTC uses threshold signatures</span>
+            <span class="marquee-item">•</span>
+            <span class="marquee-item">SP addresses, not 0x</span>
+            <span class="marquee-item">•</span>
+            <span class="marquee-item">No reentrancy in Clarity</span>
+            <span class="marquee-item">•</span>
+            <span class="marquee-item">Stacks.js, not ethers.js</span>
+            <span class="marquee-item">•</span>
+        </div>
+    </div>
+
+    <section class="code-section">
+        <div class="container">
+            <span class="section-label">The Problem</span>
+            <h2>Your AI doesn't know Stacks</h2>
+            
+            <div class="code-block">
+<code><span class="comment">// What LLMs think:</span>
+<span class="keyword">const</span> wallet = <span class="string">"MetaMask"</span>;  <span class="comment">// ❌ Wrong</span>
+<span class="keyword">const</span> address = <span class="string">"0x123..."</span>;    <span class="comment">// ❌ Wrong</span>
+<span class="keyword">const</span> cost = <span class="string">"$5.00"</span>;         <span class="comment">// ❌ Wrong</span>
+<span class="keyword">const</span> language = <span class="string">"Solidity"</span>;   <span class="comment">// ❌ Wrong</span>
+<span class="keyword">const</span> library = <span class="string">"ethers.js"</span>;   <span class="comment">// ❌ Wrong</span>
+
+<span class="comment">// Reality:</span>
+<span class="keyword">const</span> wallet = <span class="string">"Hiro Wallet"</span>;   <span class="comment">// ✅ Correct</span>
+<span class="keyword">const</span> address = <span class="string">"SP..."</span>;        <span class="comment">// ✅ Correct</span>
+<span class="keyword">const</span> cost = <span class="string">"$0.0001"</span>;       <span class="comment">// ✅ Correct</span>
+<span class="keyword">const</span> language = <span class="string">"Clarity"</span>;      <span class="comment">// ✅ Correct</span>
+<span class="keyword">const</span> library = <span class="string">"Stacks.js"</span>;    <span class="comment">// ✅ Correct</span></code>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <span class="section-label">The Gap</span>
+            <h2>What AI Gets Wrong</h2>
+            
+            <div class="grid-2">
+                <div class="misconception-card">
+                    <h3>Wallets</h3>
+                    <p class="wrong">"Use MetaMask"</p>
+                    <p class="correct">→ Use Hiro Wallet or Leather</p>
+                </div>
+                
+                <div class="misconception-card">
+                    <h3>Addresses</h3>
+                    <p class="wrong">"0x... like Ethereum"</p>
+                    <p class="correct">→ SP... (mainnet) or ST... (testnet)</p>
+                </div>
+                
+                <div class="misconception-card">
+                    <h3>Reentrancy</h3>
+                    <p class="wrong">"Possible in Clarity"</p>
+                    <p class="correct">→ NOT possible — no recursion</p>
+                </div>
+                
+                <div class="misconception-card">
+                    <h3>Gas Costs</h3>
+                    <p class="wrong">"Stacks is expensive"</p>
+                    <p class="correct">→ Fractions of a cent ($0.0001)</p>
+                </div>
+                
+                <div class="misconception-card">
+                    <h3>sBTC</h3>
+                    <p class="wrong">"Wrapped Bitcoin"</p>
+                    <p class="correct">→ Threshold signatures, not wrapped</p>
+                </div>
+                
+                <div class="misconception-card">
+                    <h3>Language</h3>
+                    <p class="wrong">"Like Solidity"</p>
+                    <p class="correct">→ Decidable LISP, no runtime surprises</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="skills-section">
+        <div class="container">
+            <span class="section-label" style="color: var(--gray);">Available Skills</span>
+            <h2>Learn the Reality</h2>
+            
+            <div class="skills-grid">
+                <a href="skills/why/SKILL.md" class="skill-item">
+                    <div>
+                        <div class="skill-icon">🌐</div>
+                        <h3>Why Stacks</h3>
+                        <p>Bitcoin L2, not Ethereum. sBTC, Clarity, Proof of Transfer.</p>
+                    </div>
+                    <span class="skill-meta">AI gets this wrong</span>
+                    <div class="skill-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </div>
+                </a>
+                
+                <a href="skills/clarity/SKILL.md" class="skill-item">
+                    <div>
+                        <div class="skill-icon">💻</div>
+                        <h3>Clarity</h3>
+                        <p>Decidable LISP-like language. No recursion = no reentrancy.</p>
+                    </div>
+                    <span class="skill-meta">Not like Solidity</span>
+                    <div class="skill-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </div>
+                </a>
+                
+                <a href="skills/mistakes/SKILL.md" class="skill-item">
+                    <div>
+                        <div class="skill-icon">⚠️</div>
+                        <h3>Common Mistakes</h3>
+                        <p>Errors beginners and LLMs make. The . prefix, response types.</p>
+                    </div>
+                    <span class="skill-meta">Fix your code</span>
+                    <div class="skill-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </div>
+                </a>
+                
+                <a href="skills/security/SKILL.md" class="skill-item">
+                    <div>
+                        <div class="skill-icon">🔒</div>
+                        <h3>Security</h3>
+                        <p>Access control, post-conditions, common vulnerabilities.</p>
+                    </div>
+                    <span class="skill-meta">Prevents fund loss</span>
+                    <div class="skill-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </div>
+                </a>
+                
+                <a href="skills/wallets/SKILL.md" class="skill-item">
+                    <div>
+                        <div class="skill-icon">👛</div>
+                        <h3>Wallets</h3>
+                        <p>Hiro Wallet, Leather. Key safety. SP/ST address format.</p>
+                    </div>
+                    <span class="skill-meta">Not MetaMask</span>
+                    <div class="skill-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </div>
+                </a>
+                
+                <a href="skills/tokens/SKILL.md" class="skill-item">
+                    <div>
+                        <div class="skill-icon">🪙</div>
+                        <h3>Tokens</h3>
+                        <p>SIP-010 fungible tokens. 6 decimals, define-fungible-token.</p>
+                    </div>
+                    <span class="skill-meta">Not ERC-20</span>
+                    <div class="skill-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </div>
+                </a>
+                
+                <a href="skills/nft/SKILL.md" class="skill-item">
+                    <div>
+                        <div class="skill-icon">🖼️</div>
+                        <h3>NFTs</h3>
+                        <p>SIP-009 non-fungible tokens. Metadata on IPFS.</p>
+                    </div>
+                    <span class="skill-meta">Not ERC-721</span>
+                    <div class="skill-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </div>
+                </a>
+                
+                <a href="skills/sbtc/SKILL.md" class="skill-item">
+                    <div>
+                        <div class="skill-icon">₿</div>
+                        <h3>sBTC</h3>
+                        <p>Bitcoin bridging. Threshold signatures, not wrapped BTC.</p>
+                    </div>
+                    <span class="skill-meta">Trust-minimized</span>
+                    <div class="skill-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </div>
+                </a>
+                
+                <a href="skills/stacking/SKILL.md" class="skill-item">
+                    <div>
+                        <div class="skill-icon">📈</div>
+                        <h3>Stacking</h3>
+                        <p>Earn Bitcoin by locking STX. 2 cycles minimum.</p>
+                    </div>
+                    <span class="skill-meta">Not staking</span>
+                    <div class="skill-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </div>
+                </a>
+                
+                <a href="skills/bns/SKILL.md" class="skill-item">
+                    <div>
+                        <div class="skill-icon">📛</div>
+                        <h3>BNS</h3>
+                        <p>Bitcoin Name System. .stx names, resolve to addresses.</p>
+                    </div>
+                    <span class="skill-meta">Not ENS</span>
+                    <div class="skill-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </div>
+                </a>
+                
+                <a href="skills/gas/SKILL.md" class="skill-item">
+                    <div>
+                        <div class="skill-icon">⛽</div>
+                        <h3>Gas & Costs</h3>
+                        <p>Fractions of a cent. Post-conditions. No gas auctions.</p>
+                    </div>
+                    <span class="skill-meta">Very cheap</span>
+                    <div class="skill-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </div>
+                </a>
+                
+                <a href="skills/contracts/SKILL.md" class="skill-item">
+                    <div>
+                        <div class="skill-icon">📄</div>
+                        <h3>Contracts</h3>
+                        <p>Verified addresses. sBTC canonical address. Never hallucinate.</p>
+                    </div>
+                    <span class="skill-meta">Check on-chain</span>
+                    <div class="skill-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </div>
+                </a>
+                
+                <a href="skills/frontend/SKILL.md" class="skill-item">
+                    <div>
+                        <div class="skill-icon">🖥️</div>
+                        <h3>Frontend</h3>
+                        <p>Stacks.js, Hiro Wallet SDK, post-conditions.</p>
+                    </div>
+                    <span class="skill-meta">Not ethers.js</span>
+                    <div class="skill-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </div>
+                </a>
+                
+                <a href="skills/clarinet/SKILL.md" class="skill-item">
+                    <div>
+                        <div class="skill-icon">🧰</div>
+                        <h3>Clarinet</h3>
+                        <p>Local dev environment. DevNet. Testing workflow.</p>
+                    </div>
+                    <span class="skill-meta">Required tool</span>
+                    <div class="skill-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </div>
+                </a>
+                
+                <a href="skills/ship/SKILL.md" class="skill-item">
+                    <div>
+                        <div class="skill-icon">🚀</div>
+                        <h3>Ship</h3>
+                        <p>End-to-end dApp guide. 1-2 contracts max for MVP.</p>
+                    </div>
+                    <span class="skill-meta">Start here</span>
+                    <div class="skill-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <span class="section-label">Usage</span>
+            <h2>Install in Your AI</h2>
+            
+            <div class="code-block">
+<code><span class="comment"># For any AI agent:</span>
+Install the https://raw.githubusercontent.com/developerfred/stacksskills/master/SKILL.md skill
+
+<span class="comment"># Or for Claude Code:</span>
+/plugin marketplace add developerfred/stacksskills
+/plugin install stacksskills</code>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <span class="section-label">Resources</span>
+            <h2>Official Docs</h2>
+            
+            <div class="resources-grid">
+                <a href="https://docs.stacks.co/" target="_blank" rel="noopener" class="resource-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                    </svg>
+                    <span>Stacks Docs</span>
+                </a>
+                
+                <a href="https://www.hiro.so/wallet" target="_blank" rel="noopener" class="resource-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="4" width="20" height="16" rx="2"/>
+                        <path d="M12 12h.01"/>
+                    </svg>
+                    <span>Hiro Wallet</span>
+                </a>
+                
+                <a href="https://explorer.stacks.co" target="_blank" rel="noopener" class="resource-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 16v-4M12 8h.01"/>
+                    </svg>
+                    <span>Explorer</span>
+                </a>
+                
+                <a href="https://github.com/hirosystems/clarinet" target="_blank" rel="noopener" class="resource-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                    </svg>
+                    <span>Clarinet</span>
+                </a>
+                
+                <a href="https://book.clarity-lang.org/" target="_blank" rel="noopener" class="resource-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                    </svg>
+                    <span>Clarity Book</span>
+                </a>
+                
+                <a href="https://docs.stacks.co/understand-stacks/sbtc" target="_blank" rel="noopener" class="resource-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 6v6l4 2"/>
+                    </svg>
+                    <span>sBTC Docs</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-logo">StacksSkills</div>
+            <div class="footer-links">
+                <a href="SKILL.md">Skills</a>
+                <a href="https://github.com/developerfred/stacksskills">GitHub</a>
+                <a href="skills/why/SKILL.md">Start Here</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
