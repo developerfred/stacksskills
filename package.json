@@ -1,0 +1,27 @@
+{
+  "name": "stacks-skills",
+  "version": "1.0.0",
+  "description": "The missing knowledge between AI agents and Stacks/Bitcoin.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/developerfred/stacksskills.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/developerfred/stacksskills/issues"
+  },
+  "homepage": "https://github.com/developerfred/stacksskills#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.58.2"
+  }
+}

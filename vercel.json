@@ -1,8 +1,6 @@
 {
   "version": 2,
   "public": true,
-  "trailingSlash": true,
-  "cleanUrls": true,
   "headers": [
     {
       "source": "/(.*)",
@@ -22,16 +20,10 @@
       ]
     }
   ],
-  "redirects": [
-    {
-      "source": "/",
-      "destination": "/index.html"
-    }
-  ],
   "rewrites": [
     {
-      "source": "/:path*/SKILL.md",
-      "destination": "/:path*/SKILL.md"
+      "source": "/((?!.*\\.).*)",
+      "destination": "/$1"
     }
   ]
 }
