@@ -25,5 +25,27 @@
       "source": "/((?!.*\\.).*)",
       "destination": "/$1"
     }
+  ],
+  "redirects": [
+    {
+      "source": "/docs",
+      "destination": "/docs/why",
+      "permanent": true
+    },
+    {
+      "source": "/skills",
+      "destination": "/docs/why",
+      "permanent": true
+    }
+  ],
+  "routes": [
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "status": 404,
+      "dest": "/404.html"
+    }
   ]
 }

@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BTC Finality — Transaction Confirmation — StacksSkills Docs</title>
+    <meta name="description" content="Stacks uses Bitcoin for finality. Microblocks provide fast soft confirmation, Bitcoin anchor provides true finality.">
+    <link rel="canonical" href="https://stacksskills.com/docs/finality">
+    <meta property="og:title" content="BTC Finality — Transaction Confirmation">
+    <meta property="og:description" content="Bitcoin-anchored finality for Stacks transactions.">
+    <meta property="og:url" content="https://stacksskills.com/docs/finality">
+    <meta name="twitter:title" content="BTC Finality — Transaction Confirmation">
+    <meta name="twitter:description" content="Bitcoin-anchored finality for Stacks transactions.">
+    <meta name="theme-color" content="#F7931A">
+    <meta name="talentapp:project_verification" content="cf27ccabf641c61dd9814b05f06cccfa7d3deb7b314693b2d8764f84983c50059c97b938f5a4a2192b22beaf1c551aafe22fde04a666a4e40b10042b20fdf4c0">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    
+    <style>
+        :root {
+            --orange: #F7931A;
+            --black: #0D0D0D;
+            --black-soft: #1A1A1A;
+            --gray-dark: #2D2D2D;
+            --gray: #6B6B6B;
+            --gray-light: #E5E5E5;
+            --white: #FAFAFA;
+            --blue: #4A90D9;
+            
+            --font-display: 'Outfit', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            
+            --sidebar-width: 280px;
+            --header-height: 64px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-display);
+            background: var(--white);
+            color: var(--black);
+            line-height: 1.7;
+            font-size: 16px;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--header-height);
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--gray-light);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            z-index: 100;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--black);
+            text-decoration: none;
+        }
+
+        .header-logo svg { width: 32px; height: 32px; }
+        .header-nav { display: flex; gap: 2rem; }
+        .header-nav a {
+            color: var(--gray);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .header-nav a:hover, .header-nav a.active { color: var(--orange); }
+
+        .layout { display: flex; margin-top: var(--header-height); }
+
+        .sidebar {
+            position: fixed;
+            top: var(--header-height);
+            left: 0;
+            width: var(--sidebar-width);
+            height: calc(100vh - var(--header-height));
+            background: var(--white);
+            border-right: 1px solid var(--gray-light);
+            overflow-y: auto;
+            padding: 2rem 0;
+        }
+
+        .sidebar-section {
+            padding: 0 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--gray);
+            margin-bottom: 0.75rem;
+        }
+
+        .sidebar-nav { display: flex; flex-direction: column; gap: 0.25rem; }
+        .sidebar-nav a {
+            color: var(--gray);
+            text-decoration: none;
+            font-size: 14px;
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        .sidebar-nav a:hover { background: var(--gray-light); color: var(--black); }
+        .sidebar-nav a.active { background: var(--orange); color: var(--white); }
+
+        .main {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            padding: 3rem 4rem;
+            max-width: 900px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--orange);
+        }
+
+        h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 1.5rem 0 0.5rem;
+        }
+
+        p { margin-bottom: 1rem; color: var(--gray-dark); }
+
+        ul, ol { margin: 1rem 0; padding-left: 1.5rem; }
+        li { margin-bottom: 0.5rem; color: var(--gray-dark); }
+
+        code {
+            font-family: var(--font-mono);
+            background: var(--gray-light);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background: var(--black);
+            color: var(--white);
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+
+        .wrong {
+            color: #dc3545;
+            text-decoration: line-through;
+            margin-right: 0.5rem;
+        }
+
+        .correct {
+            color: #28a745;
+            font-weight: 600;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        th { background: var(--gray-light); font-weight: 600; }
+
+        .info-box {
+            background: #e7f3ff;
+            border-left: 4px solid var(--blue);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .doc-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--gray-light);
+        }
+
+        .doc-footer a {
+            color: var(--orange);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .doc-footer a:hover { text-decoration: underline; }
+
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .main { margin-left: 0; padding: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="/" class="header-logo">
+            <svg viewBox="0 0 32 32" fill="none">
+                <circle cx="16" cy="16" r="14" stroke="#F7931A" stroke-width="2"/>
+                <text x="16" y="21" text-anchor="middle" fill="#F7931A" font-size="14">₿</text>
+            </svg>
+            StacksSkills
+        </a>
+        <nav class="header-nav">
+            <a href="/docs/why">Docs</a>
+            <a href="https://github.com/developerfred/stacksskills">GitHub</a>
+        </nav>
+    </header>
+
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-label">Getting Started</div>
+                <nav class="sidebar-nav">
+                    <a href="why.html">Why Stacks</a>
+                    <a href="ship.html">Ship</a>
+                </nav>
+            </div>
+            <div class="sidebar-section">
+                <div class="sidebar-label">Core</div>
+                <nav class="sidebar-nav">
+                    <a href="clarity.html">Clarity</a>
+                    <a href="clarinet.html">Clarinet</a>
+                    <a href="security.html">Security</a>
+                </nav>
+            </div>
+            <div class="sidebar-section">
+                <div class="sidebar-label">Features</div>
+                <nav class="sidebar-nav">
+                    <a href="tokens.html">Tokens</a>
+                    <a href="nft.html">NFTs</a>
+                    <a href="sbtc.html">sBTC</a>
+                    <a href="stacking.html">Stacking</a>
+                    <a href="bns.html">BNS</a>
+                </nav>
+            </div>
+            <div class="sidebar-section">
+                <div class="sidebar-label">Advanced</div>
+                <nav class="sidebar-nav">
+                    <a href="mining.html">Mining</a>
+                    <a href="tokenomics.html">Tokenomics</a>
+                    <a href="nakamoto.html">Nakamoto</a>
+                    <a href="finality.html" class="active">BTC Finality</a>
+                </nav>
+            </div>
+        </aside>
+
+        <main class="main">
+            <h1>BTC Finality — Transaction Confirmation</h1>
+            <p>Stacks uses Bitcoin for finality. Understanding the confirmation levels is crucial for building secure dApps.</p>
+
+            <h2>Key Misconceptions</h2>
+            <ul>
+                <li><strong class="wrong">LLMs say:</strong> "Stacks transactions finalize in ~10 minutes"</li>
+                <li><strong class="correct">Reality:</strong> Microblocks provide faster "soft confirmation"</li>
+            </ul>
+
+            <h2>Understanding Finality</h2>
+            <ul>
+                <li><strong>Soft finality (microblocks):</strong> Fast, but can be reorged</li>
+                <li><strong>Hard finality (Bitcoin anchor):</strong> Final, cannot be reversed</li>
+            </ul>
+
+            <div class="info-box">
+                <strong>Microblock finality:</strong> seconds to <1 minute<br>
+                <strong>Bitcoin anchor:</strong> ~10 minutes (1 Bitcoin block)<br>
+                <strong>High value:</strong> ~1 hour (6 Bitcoin blocks)
+            </div>
+
+            <h2>Confirmation Levels</h2>
+            <table>
+                <tr>
+                    <th>Confirmations</th>
+                    <th>Security Level</th>
+                    <th>Use Case</th>
+                </tr>
+                <tr>
+                    <td>0-1</td>
+                    <td>Microblock</td>
+                    <td>Fast, low value</td>
+                </tr>
+                <tr>
+                    <td>1-2</td>
+                    <td>Low</td>
+                    <td>Testing</td>
+                </tr>
+                <tr>
+                    <td>3-4</td>
+                    <td>Medium</td>
+                    <td>Regular transactions</td>
+                </tr>
+                <tr>
+                    <td>6+</td>
+                    <td>High</td>
+                    <td>High value transactions</td>
+                </tr>
+            </table>
+
+            <h2>The Anchoring Mechanism</h2>
+            <ol>
+                <li>Stacks blocks are produced and grouped</li>
+                <li>A Merkle root of Stacks blocks is committed to a Bitcoin block</li>
+                <li>This creates an immutable link between Stacks and Bitcoin</li>
+            </ol>
+
+            <h2>Common LLM Errors</h2>
+            
+            <h3>Error 1: Oversimplifying Finality</h3>
+            <pre><code>// WRONG - LLM might say one number
+const stxFinality = "10 minutes";
+
+// CORRECT - Multiple layers
+const finality = {
+  "microblock": "seconds to <1 min",
+  "anchor": "~10 min (1 Bitcoin block)",
+  "high_value": "1 hour (6 Bitcoin blocks)"
+};</code></pre>
+
+            <h3>Error 2: Ignoring Microblocks</h3>
+            <pre><code>// WRONG - Treating all equally
+await tx.wait(10 * 60 * 1000);
+
+// CORRECT - Use appropriate finality
+const receipt = await tx.wait(); // Uses microblock by default
+// For high value, explicitly wait for Bitcoin anchor</code></pre>
+
+            <h2>Finality Comparison</h2>
+            <table>
+                <tr>
+                    <th>Blockchain</th>
+                    <th>Finality Time</th>
+                    <th>Security Model</th>
+                </tr>
+                <tr>
+                    <td>Bitcoin</td>
+                    <td>~10 min (1 block)</td>
+                    <td>PoW</td>
+                </tr>
+                <tr>
+                    <td>Ethereum</td>
+                    <td>~15 min (12+ blocks)</td>
+                    <td>PoS</td>
+                </tr>
+                <tr>
+                    <td>Stacks</td>
+                    <td>~10 min (Bitcoin anchor)</td>
+                    <td>Bitcoin security</td>
+                </tr>
+            </table>
+
+            <div class="doc-footer">
+                <a href="nakamoto.html">← Previous: Nakamoto</a>
+                <a href="mistakes.html">Next: Common Mistakes →</a>
+            </div>
+        </main>
+    </div>
+    <script>
+        window.vaq = window.vaq || [];
+        function vaq(){vaq.push(arguments);}
+        vaq('track', 'pageview');
+    </script>
+    <script async src="https://v.vercel-analytics.com/insight.js"></script>
+</body>
+</html>

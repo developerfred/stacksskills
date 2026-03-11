@@ -1,0 +1,12 @@
+# https://stacksskills.com/robots.txt
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://stacksskills.com/sitemap.xml
+
+# Disallow internal/development paths
+Disallow: /.git/
+Disallow: /.agents/
+Disallow: /skills/
+Disallow: /*.md$

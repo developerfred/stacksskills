@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>StacksSkills</title>
+    <link>https://stacksskills.com</link>
+    <description>The missing knowledge between AI agents and Stacks/Bitcoin. Corrections for Clarity, sBTC, wallets, and costs.</description>
+    <language>en</language>
+    <lastBuildDate>Wed, 11 Mar 2026 00:00:00 GMT</lastBuildDate>
+    <atom:link href="https://stacksskills.com/feed.xml" rel="self" type="application/rss+xml"/>
+    
+    <item>
+      <title>Why Stacks — The Bitcoin L2 Angle</title>
+      <link>https://stacksskills.com/docs/why</link>
+      <description>Understand why Stacks is a Bitcoin L2, not Ethereum. Learn about sBTC, Clarity, and Proof of Transfer.</description>
+      <pubDate>Wed, 11 Mar 2026 00:00:00 GMT</pubDate>
+      <guid>https://stacksskills.com/docs/why</guid>
+    </item>
+    
+    <item>
+      <title>Ship — End-to-End Stacks dApp Development</title>
+      <link>https://stacksskills.com/docs/ship</link>
+      <description>End-to-end guide to building and deploying Stacks dApps.</description>
+      <pubDate>Wed, 11 Mar 2026 00:00:00 GMT</pubDate>
+      <guid>https://stacksskills.com/docs/ship</guid>
+    </item>
+    
+    <item>
+      <title>Clarity — Smart Contract Development</title>
+      <link>https://stacksskills.com/docs/clarity</link>
+      <description>Learn Clarity, the decidable LISP-like language for Stacks.</description>
+      <pubDate>Wed, 11 Mar 2026 00:00:00 GMT</pubDate>
+      <guid>https://stacksskills.com/docs/clarity</guid>
+    </item>
+    
+    <item>
+      <title>Security — Clarity Smart Contract Security</title>
+      <link>https://stacksskills.com/docs/security</link>
+      <description>Security patterns for Clarity smart contracts.</description>
+      <pubDate>Wed, 11 Mar 2026 00:00:00 GMT</pubDate>
+      <guid>https://stacksskills.com/docs/security</guid>
+    </item>
+    
+    <item>
+      <title>Wallets &amp; Keys — Stacks Wallet Integration</title>
+      <link>https://stacksskills.com/docs/wallets</link>
+      <description>Hiro Wallet and Leather integration.</description>
+      <pubDate>Wed, 11 Mar 2026 00:00:00 GMT</pubDate>
+      <guid>https://stacksskills.com/docs/wallets</guid>
+    </item>
+    
+    <item>
+      <title>Gas &amp; Costs — Transaction Costs on Stacks</title>
+      <link>https://stacksskills.com/docs/gas</link>
+      <description>Transaction costs on Stacks are fractions of a cent.</description>
+      <pubDate>Wed, 11 Mar 2026 00:00:00 GMT</pubDate>
+      <guid>https://stacksskills.com/docs/gas</guid>
+    </item>
+    
+    <item>
+      <title>Contracts &amp; Addresses — Verified Stacks Contracts</title>
+      <link>https://stacksskills.com/docs/contracts</link>
+      <description>Verified Stacks contract addresses.</description>
+      <pubDate>Wed, 11 Mar 2026 00:00:00 GMT</pubDate>
+      <guid>https://stacksskills.com/docs/contracts</guid>
+    </item>
+    
+    <item>
+      <title>Frontend Integration — Stacks.js and Hiro Wallet</title>
+      <link>https://stacksskills.com/docs/frontend</link>
+      <description>Build frontend dApps with Stacks.js and Hiro Wallet.</description>
+      <pubDate>Wed, 11 Mar 2026 00:00:00 GMT</pubDate>
+      <guid>https://stacksskills.com/docs/frontend</guid>
+    </item>
+    
+    <item>
+      <title>Clarinet — Clarity Development Toolkit</title>
+      <link>https://stacksskills.com/docs/clarinet</link>
+      <description>Local development environment for Clarity.</description>
+      <pubDate>Wed, 11 Mar 2026 00:00:00 GMT</pubDate>
+      <guid>https://stacksskills.com/docs/clarinet</guid>
+    </item>
+    
+    <item>
+      <title>Tokens on Stacks — SIP-010 Fungible Tokens</title>
+      <link>https://stacksskills.com/docs/tokens</link>
+      <description>SIP-010 fungible tokens on Stacks.</description>
+      <pubDate>Wed, 11 Mar 2026 00:00:00 GMT</pubDate>
+      <guid>https://stacksskills.com/docs/tokens</guid>
+    </item>
+    
+    <item>
+      <title>NFTs on Stacks — SIP-009 Standard</title>
+      <link>https://stacksskills.com/docs/nft</link>
+      <description>SIP-009 non-fungible tokens on Stacks.</description>
+      <pubDate>Wed, 11 Mar 2026 00:00:00 GMT</pubDate>
+      <guid>https://stacksskills.com/docs/nft</guid>
+    </item>
+    
+    <item>
+      <title>sBTC Integration — Bridging Bitcoin to Stacks</title>
+      <link>https://stacksskills.com/docs/sbtc</link>
+      <description>sBTC uses threshold signatures, not wrapped BTC.</description>
+      <pubDate>Wed, 11 Mar 2026 00:00:00 GMT</pubDate>
+      <guid>https://stacksskills.com/docs/sbtc</guid>
+    </item>
+    
+    <item>
+      <title>Stacking — Earn Bitcoin with STX</title>
+      <link>https://stacksskills.com/docs/stacking</link>
+      <description>Earn Bitcoin by locking STX.</description>
+      <pubDate>Wed, 11 Mar 2026 00:00:00 GMT</pubDate>
+      <guid>https://stacksskills.com/docs/stacking</guid>
+    </item>
+    
+    <item>
+      <title>BNS — Bitcoin Name System</title>
+      <link>https://stacksskills.com/docs/bns</link>
+      <description>Bitcoin Name System on Stacks.</description>
+      <pubDate>Wed, 11 Mar 2026 00:00:00 GMT</pubDate>
+      <guid>https://stacksskills.com/docs/bns</guid>
+    </item>
+    
+    <item>
+      <title>Common Mistakes — Clarity Development Errors</title>
+      <link>https://stacksskills.com/docs/mistakes</link>
+      <description>Common mistakes in Clarity development.</description>
+      <pubDate>Wed, 11 Mar 2026 00:00:00 GMT</pubDate>
+      <guid>https://stacksskills.com/docs/mistakes</guid>
+    </item>
+    
+  </channel>
+</rss>
